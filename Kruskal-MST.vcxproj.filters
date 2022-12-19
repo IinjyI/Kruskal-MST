@@ -29,4 +29,7 @@
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Font Include="OpenSans-Bold.ttf" />
+  </ItemGroup>
 </Project>

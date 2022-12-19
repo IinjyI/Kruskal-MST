@@ -53,6 +53,14 @@ int main() {
 	//Visual edge
 	RectangleShape primitiveLine;
 
+	//visual weight
+	Font font;
+	font.loadFromFile("./OpenSans-Bold.ttf");
+	Text visWeight;
+	visWeight.setFont(font);
+	visWeight.setFillColor(Color::Cyan);
+	visWeight.setCharacterSize(24);
+
 	//Storage vectors for visual vertices and edges
 
 	vector<Vector2i> verticesVector;            //vertices
@@ -315,6 +323,10 @@ int main() {
 			for (int i = 0; i < edgesVector.size(); i++)
 			{
 				mainWindow.draw(edgesVector[i]);
+
+				visWeight.setString(to_string(edgeVect[i].weight));
+				visWeight.setPosition((edgeVect[i].vertexOne.x + edgeVect[i].vertexTwo.x) / 2+5, (edgeVect[i].vertexOne.y + edgeVect[i].vertexTwo.y) / 2+5);
+				mainWindow.draw(visWeight);
 			}
 
 			for (int i = 0; i < linkedVector.size(); i++)

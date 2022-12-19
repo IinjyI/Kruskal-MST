@@ -142,6 +142,9 @@
   <ItemGroup>
     <ResourceCompile Include="Kruskal-MST.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <Font Include="OpenSans-Bold.ttf" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
