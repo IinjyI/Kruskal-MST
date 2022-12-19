@@ -60,7 +60,12 @@ int main() {
 	visWeight.setFont(font);
 	visWeight.setFillColor(Color::Cyan);
 	visWeight.setCharacterSize(24);
-
+	
+	//visual cost
+	Text cost;
+	cost.setFont(font);
+	cost.setFillColor(Color::Green);
+	cost.setCharacterSize(30);
 	//Storage vectors for visual vertices and edges
 
 	vector<Vector2i> verticesVector;            //vertices
@@ -105,7 +110,7 @@ int main() {
 
 						for (int i = 0; i < verticesVector.size(); i++)
 						{
-							/*If two points are two closeand may intersect then it's not a valid position and
+							/*If two points are two close and may intersect then it's not a valid position and
 							the edge is not added */
 
 							if (sqrt(pow((localPosition.x - verticesVector[i].x), 2) + pow((localPosition.y - verticesVector[i].y), 2)) < 100)
@@ -310,10 +315,11 @@ int main() {
 			if (solutionIndex == nodeVect.size())
 			{
 				cout << "total weight (cost) for MST = " << tweight;
+
+				cost.setString("Total cost = "+ to_string(tweight));
+				
 			}
 		}
-
-			//-- Delay Section (Only Active When Calculating) --//
 
 			Sleep(delayAmount);
 
@@ -339,7 +345,7 @@ int main() {
 				visNode.setPosition(verticesVector[i].x, verticesVector[i].y);
 				mainWindow.draw(visNode);
 			}
-
+			mainWindow.draw(cost);
 			//Call the display method
 			mainWindow.display();
 		}
