@@ -10,7 +10,9 @@
 using namespace std;
 using namespace sf;
 
-struct Node
+//Defining data structures for vertices and edges
+
+struct Node 
 {
 	int TreeID;
 	int Xpos;
@@ -19,10 +21,11 @@ struct Node
 
 struct Edge
 {
-	sf::Vector2i vertexOne;
-	sf::Vector2i vertexTwo;
+	Vector2i vertexOne;
+	Vector2i vertexTwo;
 	int weight;
 };
+
 
 
 int main() {
@@ -43,14 +46,15 @@ int main() {
 	//Visual vertex
 	CircleShape visNode;
 	visNode.setRadius(5);
-	visNode.setFillColor(sf::Color::Blue);
+	visNode.setFillColor(Color::Blue);
 	visNode.setOrigin(6, 6);
 	visNode.setScale(3, 3);
 
 	//Visual edge
 	RectangleShape primitiveLine;
 
-	//Storage vectors
+	//Storage vectors for visual vertices and edges
+
 	vector<Vector2i> verticesVector;            //vertices
 	vector<VertexArray> edgesVector;         //edges
 	vector<VertexArray> linkedVector;      //edges for MST
@@ -64,6 +68,11 @@ int main() {
 
 	//Bool for starting the calculations
 	bool calcStarted = false;
+
+	//Declarations for important vars
+	int delayAmount = 0;
+	int solutionIndex = 0;
+	int tweight = 0;
 
 	while (mainWindow.isOpen())
 	{
@@ -112,7 +121,7 @@ int main() {
 
 							nodeVect.push_back(newNode);
 
-							cout << "- Node Added -" << endl;
+							cout << "- Vertex Added -" << endl;
 							cout << "X - Position: " << newNode.Xpos << endl;
 							cout << "Y - Position: " << newNode.Ypos << endl;
 							cout << "TreeID: " << treeID << endl;
@@ -121,7 +130,7 @@ int main() {
 					}
 
 					//Right click to add edge
-					if (event.key.code == sf::Mouse::Right)
+					if (event.key.code == Mouse::Right)
 					{
 						//Search for the closest local vertex and set it as active
 						for (int i = 0; i < verticesVector.size(); i++)
@@ -139,13 +148,13 @@ int main() {
 											activeTemp.push_back(verticesVector[i]);
 
 											//Clear the "active temporary" vector after the edge is added to the edgesVector
-											sf::VertexArray tempLine(sf::Lines, 2);
+											VertexArray tempLine(Lines, 2);
 
-											tempLine[0].position = sf::Vector2f(activeTemp[1].x, activeTemp[1].y);
-											tempLine[1].position = sf::Vector2f(activeTemp[0].x, activeTemp[0].y);
+											tempLine[0].position = Vector2f(activeTemp[1].x, activeTemp[1].y);
+											tempLine[1].position = Vector2f(activeTemp[0].x, activeTemp[0].y);
 
-											tempLine[0].color = sf::Color::Red;
-											tempLine[1].color = sf::Color::Red;
+											tempLine[0].color = Color::Red;
+											tempLine[1].color = Color::Red;
 
 											edgesVector.push_back(tempLine);
 
@@ -209,33 +218,118 @@ int main() {
 					}
 				}
 			}
-
-				}
-
-				//Clear previous frames
-				mainWindow.clear(Color::Black);
-
-				//Draw all the given edges and vertices
-				for (int i = 0; i < edgesVector.size(); i++)
+			if (event.type == Event::KeyReleased)
+			{
+				if (event.key.code == Keyboard::Space)
 				{
-					mainWindow.draw(edgesVector[i]);
+					delayAmount = 500;
+
+					
+					if (!calcStarted)
+					{
+						//Sort the edge Vector from small to large using insertion sort
+						for (int i = 1; i < edgeVect.size(); i++)
+						{
+							Edge key = edgeVect[i];
+							int j = i - 1;
+
+							while (j >= 0 && edgeVect[j].weight > key.weight)
+							{
+								edgeVect[j + 1] = edgeVect[j];
+								j = j - 1;
+							}
+							edgeVect[j + 1] = key;
+						}
+					}
+
+					//Prevent additional nodes from being added and Start the Calculation
+					calcStarted = true;
 				}
-
-				for (int i = 0; i < linkedVector.size(); i++)
-				{
-					mainWindow.draw(linkedVector[i]);
-				}
-
-				for (int i = 0; i < verticesVector.size(); i++)
-				{
-					visNode.setPosition(verticesVector[i].x, verticesVector[i].y);
-					mainWindow.draw(visNode);
-				}
-
-
-				mainWindow.display();
 			}
-		
-	
-	return 0;
+		}
+
+		//Calculations
+		if (calcStarted)
+		{
+			for (int i = 0; i < nodeVect.size(); i++)
+			{
+				if (edgeVect[solutionIndex].vertexOne.x == nodeVect[i].Xpos)
+				{
+					if (edgeVect[solutionIndex].vertexOne.y == nodeVect[i].Ypos)
+					{
+						for (int j = 0; j < nodeVect.size(); j++)
+						{
+							if (edgeVect[solutionIndex].vertexTwo.x == nodeVect[j].Xpos)
+							{
+								if (edgeVect[solutionIndex].vertexTwo.y == nodeVect[j].Ypos)
+								{
+									if (nodeVect[j].TreeID != nodeVect[i].TreeID)
+									{
+										//Convert all nodes to the new treeID preventing loop creation in the next iteration
+										for (int y = 0; y < nodeVect.size(); y++)
+										{
+											if ((nodeVect[y].TreeID == nodeVect[j].TreeID) && j != y)
+											{
+												nodeVect[y].TreeID = nodeVect[i].TreeID;
+											}
+										}
+										nodeVect[j].TreeID = nodeVect[i].TreeID;
+
+										//Add a new green overlay to the linkedVector
+										VertexArray tempLine(Lines, 2);
+
+										tempLine[0].position = Vector2f(edgeVect[solutionIndex].vertexOne.x, edgeVect[solutionIndex].vertexOne.y);
+										tempLine[1].position = Vector2f(edgeVect[solutionIndex].vertexTwo.x, edgeVect[solutionIndex].vertexTwo.y);
+
+										tweight += edgeVect[solutionIndex].weight;
+
+										tempLine[0].color = Color::Green;
+										tempLine[1].color = Color::Green;
+
+										linkedVector.push_back(tempLine);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			//Increment the solution index (Edge to check in the next iteration)
+			solutionIndex++;
+
+			//There are (V-1) edges in the spanning tree, our calculations are done
+			if (solutionIndex == nodeVect.size())
+			{
+				cout << "total weight (cost) for MST = " << tweight;
+			}
+		}
+
+			//-- Delay Section (Only Active When Calculating) --//
+
+			Sleep(delayAmount);
+
+			mainWindow.clear(Color::Black);
+
+			//Draw all the given edges and vertices
+			for (int i = 0; i < edgesVector.size(); i++)
+			{
+				mainWindow.draw(edgesVector[i]);
+			}
+
+			for (int i = 0; i < linkedVector.size(); i++)
+			{
+				mainWindow.draw(linkedVector[i]);
+			}
+
+			for (int i = 0; i < verticesVector.size(); i++)
+			{
+				visNode.setPosition(verticesVector[i].x, verticesVector[i].y);
+				mainWindow.draw(visNode);
+			}
+
+			//Call the display method
+			mainWindow.display();
+		}
+		return 0;
 }
