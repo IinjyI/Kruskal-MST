@@ -15,3 +15,13 @@ Implementing Kruskal's algorithm along with insertion sort in C++ to generate Mi
     + Click on right mouse on vertex one then click on right mouse on vertex two, then enter the edge weight in the command prompt associated with the app then press enter.
   - `Start calculating`:
     + Press space bar.
+
+- ### Snapshots:
+
+
+https://user-images.githubusercontent.com/90464702/208554705-28056683-9767-4f72-ae55-8869141857e5.mp4
+
+
+
+https://user-images.githubusercontent.com/90464702/208555111-33f84b0e-bfb0-4637-aa9a-f190757f4f53.mp4
+
