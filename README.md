@@ -1,5 +1,5 @@
 # Kruskal's Algorithm MST
-Implementing Kruskal's algorithm along with insertion sort in C++ to generate Minimum spanning tree and calculate its cost.
+Implementing ****`Kruskal's algorithm`**** along with ****`insertion sort`**** in C++ to generate Minimum spanning tree and calculate its cost.
 
 - ### Important notes:
   - `Release`:
@@ -19,9 +19,11 @@ Implementing Kruskal's algorithm along with insertion sort in C++ to generate Mi
 - ### Snapshots:
 
 
-https://user-images.githubusercontent.com/90464702/208554705-28056683-9767-4f72-ae55-8869141857e5.mp4
+https://user-images.githubusercontent.com/90464702/208555675-6d8c4734-f52d-4daf-8385-7203b1bead32.mp4
 
 
 
-https://user-images.githubusercontent.com/90464702/208555111-33f84b0e-bfb0-4637-aa9a-f190757f4f53.mp4
+https://user-images.githubusercontent.com/90464702/208555719-487bf5c0-dfa8-47df-a944-d78b156f8898.mp4
+
+
 
