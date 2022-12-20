@@ -1,5 +1,5 @@
 # Kruskal's Algorithm MST
-Implementing Kruskal's algorithm with C++ to generate MST.
+Implementing Kruskal's algorithm along with insertion sort in C++ to generate Minimum spanning tree and calculate its cost.
 
 - ### Important notes:
   - `Release`:
